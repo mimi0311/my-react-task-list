@@ -1,0 +1,13 @@
+.container{
+    display: flex;
+    justify-content: space-between;
+    align-items: start;  
+    
+}
+
+.tareas-con-linea {
+    text-decoration: line-through;
+}
+.tareas-sin-linea {
+    text-decoration: none;
+}
