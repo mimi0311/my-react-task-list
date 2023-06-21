@@ -1,13 +1,35 @@
-.container{
+.container {
     display: flex;
-    justify-content: space-between;
-    align-items: start;  
-    
-}
-
-.tareas-con-linea {
+    align-items: center;
+  } 
+  
+  .container input[type="checkbox"] {
+    margin-right: 20px;
+  }
+  
+  .taks {
+    flex-grow: 1;
+    margin-right: 1%;
+  }
+  
+  .task-with-line {
     text-decoration: line-through;
-}
-.tareas-sin-linea {
-    text-decoration: none;
-}
+  }
+  
+  .container button {
+    background-color: #22223B;
+    color: #F2E9E4;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+  }
+  
+  .container button:hover {
+    background-color: #4A4E69;
+  }
+  
+  .clear-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+  }

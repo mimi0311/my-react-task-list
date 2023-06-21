@@ -8,10 +8,6 @@ function App() {
     <>
       <Header/>
       <TaskList/>
-      <div>
-        <p>Tienes 2 tareas pendientes</p>
-        <button>Limpiar todo</button>
-      </div>
     </>
   )
 }

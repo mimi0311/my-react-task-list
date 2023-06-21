@@ -1,32 +1,73 @@
-import React from 'react';
+import {useState, useEffect} from 'react';
+import useTaskManager from '../hooks/useTaskManager';
 import Task from './Task';
-import { useState, useEffect } from 'react';
+import './Task.css'
 
 function TaskList() {
-  const [tasks, setTasks] = useState([
-    {name: "Tarea 1", status: true},
-    {name: "Tarea 2", status: false},
-  ]);
+  const { tasks, createTask, deleteTask, updateTask, updateTaskStatus } = useTaskManager();
+  const [taskName, setTaskName] = useState('');
+  const [pendingTasks, setPendingTasks] = useState(0);
 
   useEffect(() => {
-    setTasks(JSON.parse(localStorage.getItem("tasks")) || []);
-  }, [])
+    setPendingTasks(tasks.filter((task) => !task.status).length)}, [tasks])
 
-  useEffect(() => {
-    localStorage.setItem("tasks", JSON.stringify(tasks));
-  }, [tasks])
+  const handleTaskStatusChange = (index) => updateTaskStatus(index)
+
+  const addTask = (e) => {
+    e.preventDefault();
+    if(taskName.trim() !== ''){
+      createTask(taskName)
+      setTaskName('')
+    }
+  }
+
+  const handleDeleteTask = (index) => deleteTask(index)
+
+  const handleUpdateTask = (index, updateName) => updateTask(index, {name: updateName})
+
+  const handleInputChange = (e) => setTaskName(e.target.value)
+
+  const handleClearAll = () =>{
+    const completedTaskIndexes = tasks.reduce((indexes, task, index) => {
+      if(task.status)
+        indexes.push(index)
+      return indexes
+    }, [])
+    completedTaskIndexes.reverse().forEach((index) => {
+      deleteTask(index)
+    })
+  }
 
   return (
     <>
-      <div>
-        <input type="text" placeholder='Agregar nueva Tarea'/>
-        <button>+</button>
-      </div>
+      <form onSubmit={ addTask }>
+        <input 
+          type="text" 
+          placeholder='Add new task'
+          value={ taskName }
+          onChange={ handleInputChange }
+          />
+        <button>Add</button>
+      </form>
       <ul>
-      {tasks.map((task) => (
-        <li><Task name={task.name} status={task.status}/></li>
-      ))}
+        {tasks.map((task, index) => (
+          <li key={ index }>
+            <Task 
+              name={task.name} 
+              status={task.status}
+              onStatusChange={() => handleTaskStatusChange(index)}
+              onDelete={()=> handleDeleteTask(index)}
+              onUpdate={(updatedName) => handleUpdateTask(index, updatedName)}
+            />
+          </li>
+        ))}
       </ul>
+      <>
+          <p>Tienes { pendingTasks } tareas pendientes </p>
+      </>
+      <div className='clear-container'>
+          <button onClick={handleClearAll}> Clean completed tasks </button>
+      </div>
     </>
   )
 }
