@@ -63,7 +63,7 @@ function TaskList() {
         ))}
       </ul>
       <>
-          <p>Tienes { pendingTasks } tareas pendientes </p>
+          <p> You have { pendingTasks } pending tasks. </p>
       </>
       <div className='clear-container'>
           <button onClick={handleClearAll}> Clean completed tasks </button>
