@@ -12,13 +12,16 @@ function useTaskManager(){
         return storedTasks ? JSON.parse(storedTasks) : [];
     }
 
-    const createTask = (taskName) => {
+    const createTask = (taskName, taskDescription) => {
         if (taskName.trim() !== '') {
-            const newTask = { name: taskName, status: false};
-            setTasks((prevTasks) => [...prevTasks, newTask]);
+          const newTask = { 
+            name: taskName, 
+            description: taskDescription, 
+            status: false };
+          setTasks((prevTasks) => [...prevTasks, newTask]);
         }
-    }
-
+      }
+      
     const deleteTask = (index) => {
         setTasks((prevTasks) => {
             const updatedTasks = [...prevTasks];
@@ -49,7 +52,7 @@ function useTaskManager(){
         });
       };
 
-    return { tasks, createTask, deleteTask, updateTask, updateTaskStatus}
+    return { tasks, createTask, deleteTask, updateTask, updateTaskStatus }
 }
 
 export default useTaskManager

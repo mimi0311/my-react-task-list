@@ -1,7 +1,7 @@
 import {useState} from 'react'
 import './task.css'
 
-function Task({ name, status, onStatusChange, onDelete, onUpdate}) {
+function Task({ name, status, onStatusChange, onDelete, onUpdate, description}) {
   const [isEditing, setIsEditing] = useState(false);
   const [updatedTaskName, setUpdatedTaskName] = useState(name);
 
@@ -17,12 +17,12 @@ function Task({ name, status, onStatusChange, onDelete, onUpdate}) {
   }
 
   const handleSaveClick = () => {
-    if (updatedTaskName.trim() !== ''){
+    if (updatedTaskName.trim() !== '' && updatedTaskName.length >3)  {
       onUpdate(updatedTaskName);
       setIsEditing(false);
     }
   }
-
+  
   const handleInputChange = (e) => {
     setUpdatedTaskName(e.currentTarget.value);
   }
@@ -41,7 +41,7 @@ function Task({ name, status, onStatusChange, onDelete, onUpdate}) {
             onChange={ handleInputChange }
         />
        ) : (
-        <p className={`taks ${status ? 'task-with-line' : ''}`}>{name} </p>     
+        <p className={`taks ${status ? 'task-with-line' : ''}`}> <span className='task-title'>{ name }</span> <br /> { description } </p>     
        )}
        {isEditing ? (
         <>
