@@ -1,7 +1,9 @@
-import {useState, useEffect} from 'react';
+import { useState, useEffect } from 'react';
 import useTaskManager from '../hooks/useTaskManager';
 import Task from './Task';
-import './Task.css'
+import { 
+  VStack, HStack, Input, Textarea, Button, Text, Box, List, ListItem, FormControl, FormErrorMessage
+} from '@chakra-ui/react';
 
 function TaskList() {
   const { tasks, createTask, deleteTask, updateTask, updateTaskStatus } = useTaskManager();
@@ -51,25 +53,44 @@ function TaskList() {
   }
 
   return (
-    <>
-      <form className="task-form" onSubmit={ addTask }>
-        <input 
-          type="text" 
-          placeholder='Add new task'
-          value={ taskName }
-          onChange={ handleInputChange }
-          />
-          {!isFormValid && <span className="error" role="alert">The task must have more than 3 characters</span>}
-          <textarea
+    <VStack spacing={4} width="100%">
+      <form onSubmit={addTask}>
+        <VStack>
+          <FormControl isInvalid={!isFormValid}>
+            <Input 
+              type="text" 
+              placeholder='Add new task'
+              value={taskName}
+              onChange={handleInputChange}
+              borderColor="gray.300"
+              focusBorderColor="blue.500"
+              w="500px"
+            />
+            <FormErrorMessage>
+              {isFormValid ? null : "The task must have more than 3 characters"}
+            </FormErrorMessage>
+          </FormControl>
+
+          <Textarea
             placeholder='Description (optional)'
-            value={ taskDescription }
-            onChange={ handleDescriptionChange }
+            value={taskDescription}
+            onChange={handleDescriptionChange}
           />
-          <button>Add</button>
+
+          <Button 
+            bg="purple.700" 
+            color="white" 
+            _hover={{
+              bg: "purple.600",
+            }}
+            type="submit" 
+            w="200px">Add</Button>
+        </VStack>
       </form>
-      <ul>
+
+      <List width="100%" spacing={3}>
         {tasks.map((task, index) => (
-          <li key={ index }>
+          <ListItem key={index}>
             <Task 
               name={task.name} 
               description={task.description}
@@ -78,17 +99,26 @@ function TaskList() {
               onDelete={()=> handleDeleteTask(index)}
               onUpdate={(updatedName) => handleUpdateTask(index, updatedName)}
             />
-          </li>
+          </ListItem>
         ))}
-      </ul>
-      <>
-          <p className='tasks-pending'> You have { pendingTasks } pending tasks. </p>
-      </>
-      <div className='clear-container'>
-          <button onClick={handleClearAll}> Clean completed tasks </button>
-      </div>
-    </>
-  )
+      </List>
+
+      <Box alignSelf="stretch">
+        <Text textAlign="center" my={4}>You have {pendingTasks} pending tasks.</Text>
+      </Box>
+
+      <Box d="flex" justifyContent="center">
+        <Button 
+          bg="purple.700" 
+          color="white" 
+          _hover={{
+            bg: "purple.600",
+          }}
+          w="200px">Clear completed tasks</Button>
+      </Box>
+    </VStack>
+  );
 }
+
 
 export default TaskList

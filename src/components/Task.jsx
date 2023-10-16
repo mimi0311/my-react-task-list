@@ -1,5 +1,6 @@
-import {useState} from 'react'
-import './task.css'
+import { useState } from 'react'
+import { Box, Checkbox, Text, Button, Input } from '@chakra-ui/react'
+
 
 function Task({ name, status, onStatusChange, onDelete, onUpdate, description}) {
   const [isEditing, setIsEditing] = useState(false);
@@ -28,33 +29,61 @@ function Task({ name, status, onStatusChange, onDelete, onUpdate, description}) 
   }
 
   return (
-    <div className='container'>
-      <input 
-          type='checkbox'
-          checked={ status }
-          onChange={ handleCheckboxChange }
-       />
-       {isEditing ? (
-        <input 
-            type='text' 
-            value={ updatedTaskName }
-            onChange={ handleInputChange }
+    <Box display="flex" alignItems="center">
+      <Checkbox isChecked={status} onChange={handleCheckboxChange} mr={3}/>
+      {isEditing ? (
+        <Input 
+          type='text' 
+          value={updatedTaskName} 
+          onChange={handleInputChange} 
+          size="sm"
         />
-       ) : (
-        <p className={`taks ${status ? 'task-with-line' : ''}`}> <span className='task-title'>{ name }</span> <br /> { description } </p>     
-       )}
-       {isEditing ? (
+      ) : (
+        <Text as="p" flex="1" textDecoration={status ? 'line-through' : 'none'}>
+          <b>{name}</b> <br /> {description}
+        </Text>
+      )}
+      {isEditing ? (
         <>
-            <button onClick={ handleSaveClick }> Save </button>
-            <button onClick={ handleCancelClick }> Cancel </button>
+          <Button size="xs" onClick={handleSaveClick} ml={2} 
+            bg="green.600" 
+            _hover={{
+              bg: "green.500",
+            }} 
+            color="white" >
+            Save
+          </Button>
+          <Button size="xs" onClick={handleCancelClick} ml={2}
+            bg="pink.600" 
+            _hover={{
+              bg: "pink.500",
+            }} 
+            color="white">
+            Cancel
+          </Button>
         </>
-       ):(
+      ) : (
         <>
-            <button onClick={ handleEditClick }> Edit </button>
-            <button onClick={ handleDelete }> Delete </button>
+          <Button size="xs" onClick={handleEditClick} ml={2} 
+            bg="teal.600" 
+            _hover={{
+              bg: "teal.500",
+            }} 
+            
+            color="white">
+            Edit
+          </Button>
+          <Button size="xs" onClick={handleDelete} ml={2} 
+            bg="pink.600" 
+            _hover={{
+              bg: "pink.500",
+            }} 
+            color="white">
+            Delete
+          </Button>
         </>
-       )}
-    </div>
+      )}
+    </Box>
   )
 }
 
