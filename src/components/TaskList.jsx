@@ -114,7 +114,8 @@ function TaskList() {
           _hover={{
             bg: "purple.600",
           }}
-          w="200px">Clear completed tasks</Button>
+          w="200px"
+          onClick={handleClearAll}>Clear completed tasks</Button>
       </Box>
     </VStack>
   );
